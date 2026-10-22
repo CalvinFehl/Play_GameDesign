@@ -37,7 +37,7 @@ public class ThrowFood : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Animal"))
+        if (collision.CompareTag("Animal") && collision.GetComponent<AnimalBehavior>().hungry)
             animalsInRange.Add(collision.gameObject);
     }
 
@@ -63,8 +63,10 @@ public class ThrowFood : MonoBehaviour
 
     private IEnumerator ThrowingFood()
     {
+        GameObject currentTarget = currentClosestAnimal;
+
         Vector2 startPos = transform.position;
-        Vector2 targetPos = currentClosestAnimal.transform.position;
+        Vector2 targetPos = currentTarget.transform.position;
         float z = transform.position.z;
 
         GameObject foodItem = Instantiate(food, startPos, Quaternion.identity);
@@ -94,7 +96,13 @@ public class ThrowFood : MonoBehaviour
 
             Destroy(foodItem);
 
-            //logik für füttern hier
+            AnimalBehavior animalBehavior = currentTarget.GetComponent<AnimalBehavior>();
+            animalBehavior.crumbsEaten++;
+            if (!animalBehavior.hungry)
+            {
+                animalsInRange.Remove(currentTarget);
+                currentClosestAnimal = null;
+            }
         }
     }
 }

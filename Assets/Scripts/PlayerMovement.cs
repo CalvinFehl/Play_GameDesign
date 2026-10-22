@@ -21,7 +21,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
-        Debug.Log("eee Im walkin ere");
         horizontalMovement = context.ReadValue<Vector2>().x;
         verticalMovement = context.ReadValue<Vector2>().y;
     }

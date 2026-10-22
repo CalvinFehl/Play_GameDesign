@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AnimalBehavior : MonoBehaviour
@@ -7,6 +6,7 @@ public class AnimalBehavior : MonoBehaviour
 
     public bool hungry;
     public int crumbsNeeded;
+    public int crumbsEaten;
     public float moveSpeed;
 
     public float distanceToPlayer;
@@ -14,17 +14,25 @@ public class AnimalBehavior : MonoBehaviour
 
     void Start()
     {
-        hungry = true;
-
         player = FindAnyObjectByType<PlayerMovement>().gameObject;
+        hungry = true;
     }
 
     void Update()
     {
-        distanceToPlayer = Vector2.Distance(player.transform.position, transform.position);
+        if (hungry)
+        {
+            distanceToPlayer = Vector2.Distance(player.transform.position, transform.position);
 
-        if (distanceToPlayer < detectionRange)
-            MoveAnimal();
+            if (distanceToPlayer < detectionRange)
+                MoveAnimal();
+
+            if (crumbsNeeded <= crumbsEaten)
+            {
+                hungry = false;
+                transform.Find("LoveParticles").gameObject.SetActive(true);
+            }
+        }
     }
 
     private void MoveAnimal()
