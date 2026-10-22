@@ -10,7 +10,7 @@ public class AnimalBehavior : MonoBehaviour
     public float moveSpeed;
 
     public float distanceToPlayer;
-    public bool playerInRange;
+    public float detectionRange;
 
     void Start()
     {
@@ -23,20 +23,8 @@ public class AnimalBehavior : MonoBehaviour
     {
         distanceToPlayer = Vector2.Distance(player.transform.position, transform.position);
 
-        if (playerInRange)
+        if (distanceToPlayer < detectionRange)
             MoveAnimal();
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-            playerInRange = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-            playerInRange = false;
     }
 
     private void MoveAnimal()
