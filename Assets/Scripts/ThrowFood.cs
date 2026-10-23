@@ -9,6 +9,7 @@ public class ThrowFood : MonoBehaviour
     public float currentCooldownRemaining;
 
     public GameObject food;
+    public float foodNutritionalValue = 1f;
 
     public GameObject currentClosestAnimal;
     public List<GameObject> animalsInRange = new List<GameObject>();
@@ -97,8 +98,8 @@ public class ThrowFood : MonoBehaviour
             Destroy(foodItem);
 
             AnimalBehavior animalBehavior = currentTarget.GetComponent<AnimalBehavior>();
-            animalBehavior.crumbsEaten++;
-            if (!animalBehavior.hungry)
+            
+            if (animalBehavior.EatFood(foodNutritionalValue))
             {
                 animalsInRange.Remove(currentTarget);
                 currentClosestAnimal = null;

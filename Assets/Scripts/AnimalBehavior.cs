@@ -5,8 +5,8 @@ public class AnimalBehavior : MonoBehaviour
     private GameObject player;
 
     public bool hungry;
-    public int crumbsNeeded;
-    public int crumbsEaten;
+    public float crumbsNeeded;
+    public float crumbsEaten;
     public float moveSpeed;
 
     public float distanceToPlayer;
@@ -26,13 +26,22 @@ public class AnimalBehavior : MonoBehaviour
 
             if (distanceToPlayer < detectionRange)
                 MoveAnimal();
-
-            if (crumbsNeeded <= crumbsEaten)
-            {
-                hungry = false;
-                transform.Find("LoveParticles").gameObject.SetActive(true);
-            }
         }
+    }
+
+
+    public bool EatFood(float foodAmount = 0f)
+    {
+        crumbsEaten += foodAmount; 
+        
+        if (crumbsNeeded <= crumbsEaten)
+        {
+            hungry = false;
+            transform.Find("LoveParticles").gameObject.SetActive(true);
+            return true;
+        }
+
+        return false;
     }
 
     private void MoveAnimal()
